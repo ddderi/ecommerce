@@ -1,7 +1,8 @@
 import React from "react";
+import { Container } from "../styles/AnnouncementStyles";
 
 const Announcement = () => {
-  return <div>Announcement</div>;
+  return <Container>Super deal !!!!! L</Container>;
 };
 
 export default Announcement;
