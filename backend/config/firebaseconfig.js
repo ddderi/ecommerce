@@ -6,6 +6,7 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
 
+// firebase.initializeApp(serviceAccount);
 const adminAuth = admin.auth();
 
 module.exports = adminAuth;

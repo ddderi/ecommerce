@@ -6,6 +6,7 @@ require("dotenv").config();
 
 router.post("/signup", async (req, res) => {
   const { email, password, password_confirmation } = req.body.data;
+  console.log(email);
   try {
     const userRecord = await adminAuth.getUserByEmail(email);
     return res.status(400).json({ message: "Email already in use" });
@@ -38,9 +39,8 @@ router.post("/signup", async (req, res) => {
     const mailOptions = {
       from: process.env.GMAIL_USERNAME,
       to: `${userResponse.email}`,
-      subject: "Test Email",
-      text: `This is a test email sent with Nodemailer and Gmail!
-        here is the link
+      subject: "Verification Email Code",
+      text: `Click on the link for finishing your registration
         ${emaill}`,
     };
     transporter.sendMail(mailOptions, function (error, info) {
@@ -50,7 +50,10 @@ router.post("/signup", async (req, res) => {
         console.log("Email sent: " + info.response);
       }
     });
-    return res.status(201).json({ message: "User created successfully" });
+    return res.status(201).json({
+      message:
+        "Account created successfully, a link has been sent to your email.",
+    });
   } catch (error) {
     return res
       .status(500)
