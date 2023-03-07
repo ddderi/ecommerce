@@ -1,4 +1,4 @@
-import { Container, Circle, Image, Info, Icon } from "../styles/ProductStyles";
+import { Container, Circle, Image, Info, Icon } from "../styles/Product.styles";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";

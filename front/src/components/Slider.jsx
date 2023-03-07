@@ -10,7 +10,7 @@ import {
   Title,
   Description,
   Button,
-} from "../styles/SliderStyles";
+} from "../styles/Slider.styles";
 import ArrowLeftOutlinedIcon from "@mui/icons-material/ArrowLeftOutlined";
 import ArrowRightOutlinedIcon from "@mui/icons-material/ArrowRightOutlined";
 import { sliderItems } from "../data";

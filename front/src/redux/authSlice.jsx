@@ -5,7 +5,6 @@ const initialState = {
   loading: false,
   userLogged: false || window.localStorage.getItem("auth") === "true",
   error: null,
-  token: null,
 };
 
 // export const LoginWithGoogle = createAsyncThunk("authUser/LoginWithGoogle", async ())
@@ -14,6 +13,9 @@ const authSlice = createSlice({
   name: "authUser",
   initialState,
   reducers: {
+    setError: (state, action) => {
+      state.error = action.payload;
+    },
     setLoading: (state, action) => {
       state.loading = action.payload;
     },
@@ -22,13 +24,12 @@ const authSlice = createSlice({
       state.user = action.payload.user;
       state.userLogged = action.payload.userLogged;
       state.error = null;
-      state.token = action.payload.token;
     },
     logout: (state, action) => {
       state.userLogged = false;
       state.user = null;
       state.loading = false;
-      state.error = null;
+      state.error = "Disconnected";
     },
   },
 });

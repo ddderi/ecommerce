@@ -5,7 +5,7 @@ import {
   InputContainer,
   Input,
   Button,
-} from "../styles/NewsletterStyles";
+} from "../styles/Newsletter.styles";
 import MailIcon from "@mui/icons-material/Mail";
 
 const Newsletter = () => {

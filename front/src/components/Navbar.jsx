@@ -12,7 +12,7 @@ import {
   Input,
   Logo,
   MenuItem,
-} from "../styles/NavbarStyles";
+} from "../styles/Navbar.styles";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 
 const Navbar = () => {

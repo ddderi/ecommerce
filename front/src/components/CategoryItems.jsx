@@ -5,7 +5,7 @@ import {
   Info,
   Title,
   Button,
-} from "../styles/CategoryItemsStyles";
+} from "../styles/CategoryItem.styles";
 
 const CategoryItems = ({ data }) => {
   return (

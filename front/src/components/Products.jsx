@@ -1,5 +1,5 @@
 import { popularProducts } from "../data";
-import { Container } from "../styles/ProductsStyles";
+import { Container } from "../styles/Products.styles";
 import Product from "./Product";
 
 const Products = () => {

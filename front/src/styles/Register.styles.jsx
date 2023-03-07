@@ -8,6 +8,26 @@ export const Container = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+export const InputPassword = styled.div`
+  flex: 1;
+  min-width: 51%;
+  margin: 20px 10px 0px 0px;
+  padding: 10px;
+  position: relative;
+`;
+
+export const Input = styled.input`
+  width: 100%;
+  padding: 10px;
+`;
+
+export const IconWrapper = styled.div`
+  position: absolute;
+  bottom: 25%;
+  right: 10px;
+`;
+
 export const Wrapper = styled.div`
   padding: 20px;
   width: 40%;
@@ -24,11 +44,9 @@ export const Form = styled.form`
   flex-wrap: wrap;
 `;
 
-export const Input = styled.input`
-  flex: 1;
-  min-width: 51%;
-  margin: 20px 10px 0px 0px;
-  padding: 10px;
+export const Agreement = styled.span`
+  font-size: 12px;
+  margin: 20px 0px;
 `;
 
 export const Button = styled.button`
@@ -46,7 +64,6 @@ export const Button = styled.button`
 `;
 
 export const WrapperButton = styled.div`
-  margin-top: 20px;
   width: 100%;
   display: flex;
   justify-content: space-around;
