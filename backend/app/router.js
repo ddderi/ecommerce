@@ -9,7 +9,9 @@ router.post("/signup", async (req, res) => {
   console.log(email);
   try {
     const userRecord = await adminAuth.getUserByEmail(email);
-    return res.status(400).json({ message: "Email already in use" });
+    return res
+      .status(400)
+      .json({ message: "Email already used by another user" });
   } catch (error) {
     if (error.code !== "auth/user-not-found") {
       return res

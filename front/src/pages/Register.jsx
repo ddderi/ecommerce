@@ -11,20 +11,27 @@ import {
   WrapperButton,
   InputPassword,
   IconWrapper,
+  Error,
 } from "../styles/Register.styles";
 import { SignUpUser } from "../services/UserRequest.jsx";
 import { auth, db } from "../config/firebase-config";
 import "firebase/auth";
 import firebase from "firebase/compat/app";
 import { useTogglePasswordVisibility } from "../hooks/useTogglePasswordVisibility/index.jsx";
+import { useSelector, useDispatch } from "react-redux";
+import { setLoading, setUser, setMessage } from "../redux/authSlice";
 
 const Register = () => {
   const { Icon, passwordType } = useTogglePasswordVisibility();
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConRef = useRef();
+  const errorMessage = useSelector((state) => state.authUser.message);
+  const dispatch = useDispatch();
 
-  const [message, setMessage] = useState(null);
+  const dispatchDataError = (data) => {
+    return dispatch(setMessage(data));
+  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -33,9 +40,7 @@ const Register = () => {
       password: passwordRef.current.value,
     };
     try {
-      const newRegUser = await SignUpUser(data);
-      setMessage(newRegUser.data.message);
-      console.log(newRegUser);
+      const newRegUser = await SignUpUser(data, dispatchDataError);
       return newRegUser;
     } catch (error) {
       console.log(error);
@@ -73,7 +78,11 @@ const Register = () => {
     <Container>
       <Wrapper>
         <Title>CREATE AN ACCOUNT</Title>
-        <h3>{message}</h3>
+        {errorMessage !== null ? (
+          <Error>{errorMessage}</Error>
+        ) : (
+          <Error></Error>
+        )}
         <Form onSubmit={(e) => onSubmit(e)}>
           <InputPassword>
             <Input ref={emailRef} placeholder="Email" />

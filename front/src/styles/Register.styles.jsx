@@ -68,3 +68,12 @@ export const WrapperButton = styled.div`
   display: flex;
   justify-content: space-around;
 `;
+
+export const Error = styled.h3`
+  height: 7vh;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+`;

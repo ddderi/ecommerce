@@ -4,17 +4,17 @@ const initialState = {
   user: null,
   loading: false,
   userLogged: false || window.localStorage.getItem("auth") === "true",
-  error: null,
+  message: null,
+  token: null,
+  uid: null,
 };
-
-// export const LoginWithGoogle = createAsyncThunk("authUser/LoginWithGoogle", async ())
 
 const authSlice = createSlice({
   name: "authUser",
   initialState,
   reducers: {
-    setError: (state, action) => {
-      state.error = action.payload;
+    setMessage: (state, action) => {
+      state.message = action.payload;
     },
     setLoading: (state, action) => {
       state.loading = action.payload;
@@ -23,16 +23,20 @@ const authSlice = createSlice({
       console.log(action.payload);
       state.user = action.payload.user;
       state.userLogged = action.payload.userLogged;
-      state.error = null;
+      state.message = null;
+      state.token = action.payload.token;
+      state.uid = action.payload.uid;
     },
     logout: (state, action) => {
       state.userLogged = false;
       state.user = null;
       state.loading = false;
-      state.error = "Disconnected";
+      // state.message = "Disconnected";
+      state.token = null;
+      state.uid = null;
     },
   },
 });
 
-export const { setLoading, setUser, setError, logout } = authSlice.actions;
+export const { setLoading, setUser, setMessage, logout } = authSlice.actions;
 export default authSlice.reducer;

@@ -66,10 +66,16 @@ export const WrapperButton = styled.div`
 `;
 
 export const Error = styled.h3`
-  /* width: 100%; */
   height: 7vh;
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: center;
+`;
+
+export const Agreement = styled.span`
+  width: 100%;
+  font-size: 12px;
+  margin: 0px 0px;
 `;

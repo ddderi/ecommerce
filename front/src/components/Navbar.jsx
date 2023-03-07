@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Badge from "@mui/material/Badge";
 import SearchIcon from "@mui/icons-material/Search";
 import {
@@ -14,8 +14,35 @@ import {
   MenuItem,
 } from "../styles/Navbar.styles";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setMessage } from "../redux/authSlice";
+import { useSelector } from "react-redux";
+import "firebase/auth";
+import { auth, db } from "../config/firebase-config";
+import { logout } from "../redux/authSlice";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const userConnected = useSelector((state) => state.authUser.userLogged);
+
+  const loggedUserOut = async () => {
+    try {
+      const logOutUser = await auth.signOut();
+      dispatch(logout());
+      window.localStorage.removeItem("auth");
+      return logOutUser;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    dispatch(setMessage(null));
+  }, [dispatch, location]);
+
   return (
     <Container>
       <Wrapper>
@@ -27,13 +54,31 @@ const Navbar = () => {
           </SearchContainer>
         </Left>
         <Center>
-          <Logo>E-com</Logo>
+          <Logo onClick={() => navigate("/home")}>E-com</Logo>
         </Center>
         <Right>
-          <MenuItem>REGISTRATION</MenuItem>
-          <MenuItem>SIGNIN</MenuItem>
+          {!userConnected && (
+            <>
+              <MenuItem onClick={() => navigate("/register")}>
+                PRODUCTS
+              </MenuItem>
+              <MenuItem onClick={() => navigate("/register")}>
+                REGISTRATION
+              </MenuItem>
+              <MenuItem onClick={() => navigate("/login")}>SIGNIN</MenuItem>
+            </>
+          )}
+          {userConnected && (
+            <>
+              <MenuItem onClick={() => loggedUserOut()}>DISCONNECT</MenuItem>
+              <MenuItem onClick={() => navigate("/register")}>
+                PRODUCTS
+              </MenuItem>
+              <MenuItem onClick={() => navigate("/login")}>ACCOUNT</MenuItem>
+            </>
+          )}
           <MenuItem>
-            <Badge badgeContent={4} color="primary">
+            <Badge badgeContent={0} color="primary">
               <ShoppingCartOutlinedIcon />
             </Badge>
           </MenuItem>

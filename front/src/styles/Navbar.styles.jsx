@@ -33,11 +33,15 @@ export const SearchContainer = styled.div`
 
 export const Input = styled.input`
   border: none;
+  &:focus {
+    outline: none;
+  }
 `;
 
 export const Logo = styled.h1`
   font-weight: bold;
   text-align: center;
+  cursor: pointer;
 `;
 
 export const Center = styled.div`
