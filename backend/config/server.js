@@ -5,10 +5,6 @@ const dotenv = require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const router = require("../app/router");
 
-// const sequelize = require("./app/database");
-
-// const User = require("./app/models/userModel");
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -19,7 +15,7 @@ app.use(
     credentials: true,
   })
 );
-app.use(router);
+app.use("/api/v1", router);
 
 const PORT = process.env.PORT || 8081;
 

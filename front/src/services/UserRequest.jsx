@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const axiosInstanceNode = axios.create({ baseURL: "http://localhost:8081" });
+const axiosInstanceNode = axios.create({
+  baseURL: "http://localhost:8081/api/v1",
+});
 
 export async function SignUpUser(
   data,
@@ -33,7 +35,7 @@ export async function SignUpUser(
 export async function resendEmailVerification(data, dispatchDataError) {
   try {
     const result = await axiosInstanceNode.post(
-      "/verification_email",
+      "/verification-email",
       { data },
       { withCredentials: true }
     );
