@@ -18,7 +18,27 @@ export const InputPassword = styled.div`
 `;
 
 export const Input = styled.input`
+  /* ${(props) =>
+    props.type === "password" &&
+    `
+    flex: 1;
+    
+   width: 100%;
+  letter-spacing: 0.25em;
+  padding: 10px;
+  `}
+
+  ${(props) =>
+    props.type === "text" &&
+    `
+
+    flex: 1;
   width: 100%;
+  padding: 10px;
+ 
+  `} */
+  width: 100%;
+  letter-spacing: 0.25em;
   padding: 10px;
 `;
 
@@ -65,12 +85,15 @@ export const WrapperButton = styled.div`
   justify-content: space-around;
 `;
 
-export const Error = styled.h3`
+export const ContainerError = styled.div`
   height: 7vh;
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+export const Error = styled.h3`
   text-align: center;
 `;
 
@@ -78,4 +101,19 @@ export const Agreement = styled.span`
   width: 100%;
   font-size: 12px;
   margin: 0px 0px;
+`;
+
+export const Link = styled.a`
+  /* font-size: 1.17em;
+  font-weight: bold; */
+  cursor: pointer;
+  text-decoration: underline;
+`;
+
+export const LinkPassword = styled.a`
+  /* font-size: 1.17em;
+  font-weight: bold; */
+  padding-left: 42px;
+  cursor: pointer;
+  text-decoration: underline;
 `;

@@ -33,6 +33,7 @@ const Navbar = () => {
       const logOutUser = await auth.signOut();
       dispatch(logout());
       window.localStorage.removeItem("auth");
+      window.localStorage.removeItem("tokenEcom");
       return logOutUser;
     } catch (error) {
       console.log(error);
@@ -74,7 +75,7 @@ const Navbar = () => {
               <MenuItem onClick={() => navigate("/register")}>
                 PRODUCTS
               </MenuItem>
-              <MenuItem onClick={() => navigate("/login")}>ACCOUNT</MenuItem>
+              <MenuItem onClick={() => navigate("/account")}>ACCOUNT</MenuItem>
             </>
           )}
           <MenuItem>

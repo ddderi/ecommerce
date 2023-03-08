@@ -11,26 +11,40 @@ import {
   InputPassword,
   IconWrapper,
   Error,
+  ContainerError,
+  Link,
+  LinkPassword,
 } from "../styles/Login.styles";
 import { auth, db } from "../config/firebase-config";
 import "firebase/auth";
 import firebase from "firebase/compat/app";
-import { LoginUser } from "../services/UserRequest.jsx";
+import { resendEmailVerification } from "../services/UserRequest.jsx";
 import { useTogglePasswordVisibility } from "../hooks/useTogglePasswordVisibility/index.jsx";
 import { useSelector, useDispatch } from "react-redux";
-import { setLoading, setUser, setMessage } from "../redux/authSlice";
+import {
+  setLoading,
+  setUser,
+  setMessage,
+  setLinkInfo,
+  setRedirectRegister,
+} from "../redux/authSlice";
 import { Checkbox } from "@mui/material";
 import ClipLoader from "react-spinners/ClipLoader";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const { Icon, passwordType } = useTogglePasswordVisibility();
-  const [signin, setSignin] = useState(false);
-  const [message, setMessage] = useState(null);
+  const linkInfo = useSelector((state) => state.authUser.linkInfo);
   const errorMessage = useSelector((state) => state.authUser.message);
+  const userLogged = useSelector((state) => state.authUser.userLogged);
   const loading = useSelector((state) => state.authUser.loading);
+  const redirectLinkRegister = useSelector(
+    (state) => state.authUser.redirectRegister
+  );
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // const LoginUser = async (user) => {
   //   try {
@@ -56,6 +70,9 @@ const Login = () => {
   // };
 
   const onSubmit = async (e) => {
+    dispatch(setMessage(null));
+    dispatch(setRedirectRegister(false));
+    dispatch(setLinkInfo(false));
     dispatch(setLoading(true));
     e.preventDefault();
     const data = {
@@ -67,28 +84,52 @@ const Login = () => {
         data.email,
         data.password
       );
-      emailRef.current.value = "";
-      passwordRef.current.value = "";
-      window.localStorage.setItem("auth", "true");
-      dispatch(
-        setUser({
-          user: result.user._delegate.email,
-          userLogged: true,
-          token: result.user._delegate.accessToken,
-          uid: result.user._delegate.uid,
-        })
-      );
-      dispatch(setLoading(false));
+      if (!result.user.emailVerified) {
+        dispatch(setLoading(false));
+        dispatch(setLinkInfo(true));
+        dispatch(
+          setMessage(
+            "Your email account is not verified, you need to verify it before logging-in; resend link "
+          )
+        );
+      } else if (result.user.emailVerified) {
+        emailRef.current.value = "";
+        passwordRef.current.value = "";
+        console.log(result);
+        window.localStorage.setItem(
+          "tokenEcom",
+          result.user._delegate.accessToken
+        );
+        window.localStorage.setItem("auth", "true");
+        dispatch(
+          setUser({
+            user: result.user._delegate.email,
+            userLogged: true,
+            token: result.user._delegate.accessToken,
+            uid: result.user._delegate.uid,
+          })
+        );
+        setTimeout(() => {
+          navigate("/home");
+        }, 1000);
+
+        dispatch(setLoading(false));
+      }
       return result;
     } catch (error) {
       dispatch(setLoading(false));
       const wrongpassword = /auth\/wrong-password/;
       const wronguser = /auth\/user-not-found/;
       if (wrongpassword.test(error)) {
-        dispatch(setMessage("You have typed the wrong password"));
-        console.log("WRONG PASSWORD");
+        dispatch(setLinkInfo(true));
+        dispatch(
+          setMessage(
+            "You have typed the wrong password, for forgotten password email click "
+          )
+        );
       } else if (wronguser.test(error)) {
-        dispatch(setMessage(`Your email doesn't exist, Join by clicking`));
+        dispatch(setRedirectRegister(true));
+        dispatch(setMessage(`Your email doesn't exist, Join by clicking `));
       }
     }
   };
@@ -99,7 +140,18 @@ const Login = () => {
       const authGoogle = await auth.signInWithPopup(
         new firebase.auth.GoogleAuthProvider()
       );
-      dispatch(setUser({ user: authGoogle.user._delegate, userLogged: true }));
+      dispatch(
+        setUser({
+          user: authGoogle.user._delegate.email,
+          userLogged: true,
+          token: authGoogle.user._delegate.accessToken,
+          uid: authGoogle.user._delegate.uid,
+        })
+      );
+      window.localStorage.setItem(
+        "tokenEcom",
+        authGoogle.user._delegate.accessToken
+      );
       window.localStorage.setItem("auth", "true");
       console.log(authGoogle);
       return authGoogle;
@@ -108,23 +160,48 @@ const Login = () => {
     }
   };
 
+  const sendEmailVerification = async () => {
+    dispatch(setLinkInfo(false));
+    dispatch(setMessage(null));
+    const data = { email: emailRef.current.value };
+    try {
+      const result = await resendEmailVerification(data);
+      console.log(result);
+      if (result.data.success) {
+        dispatch(setMessage("Email sent"));
+      }
+
+      return result;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
-      {!signin && (
+      {userLogged && <Navigate replace to="/home" />}
+      {!userLogged && (
         <Container>
           <Wrapper>
             <Title>LOGIN</Title>
             {errorMessage !== null ? (
-              <Error>
-                {errorMessage}
-                <a href="#"> here</a>
-              </Error>
+              <ContainerError>
+                <Error>
+                  {errorMessage}
+                  {linkInfo && (
+                    <Link onClick={() => sendEmailVerification()}>here</Link>
+                  )}
+                  {redirectLinkRegister && (
+                    <Link onClick={() => navigate("/register")}>here</Link>
+                  )}
+                </Error>
+              </ContainerError>
             ) : (
-              <Error></Error>
+              <ContainerError></ContainerError>
             )}
             <Form onSubmit={(e) => onSubmit(e)}>
               <InputPassword>
-                <Input ref={emailRef} placeholder="Email" />
+                <Input type="text" ref={emailRef} placeholder="Email" />
               </InputPassword>
               <InputPassword>
                 <Input
@@ -139,6 +216,9 @@ const Login = () => {
               <Agreement>
                 <Checkbox />
                 Remember me
+              </Agreement>
+              <Agreement>
+                <LinkPassword>Forgotten password ?</LinkPassword>
               </Agreement>
               <WrapperButton>
                 {loading && (
@@ -155,23 +235,6 @@ const Login = () => {
                 )}
                 {!loading && <Button>LOG-IN</Button>}
                 <Button type="submit" onClick={(e) => logInWithGoogle(e)}>
-                  CONNECT WITH GOOGLE
-                </Button>
-              </WrapperButton>
-            </Form>
-          </Wrapper>
-        </Container>
-      )}
-      {signin && (
-        <Container>
-          <Wrapper>
-            <Title>LOGIN WITH GOOGLE</Title>
-            <Form onSubmit={() => onSubmit()}>
-              <Input ref={emailRef} placeholder="Email" />
-              <Input ref={passwordRef} placeholder="Password" />
-              <WrapperButton>
-                {/* <Button>LOG-IN</Button> */}
-                <Button onClick={(e) => logInWithGoogle(e)}>
                   CONNECT WITH GOOGLE
                 </Button>
               </WrapperButton>
