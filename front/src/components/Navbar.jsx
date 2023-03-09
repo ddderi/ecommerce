@@ -80,7 +80,7 @@ const Navbar = () => {
           )}
           <MenuItem>
             <Badge badgeContent={0} color="primary">
-              <ShoppingCartOutlinedIcon />
+              <ShoppingCartOutlinedIcon onClick={() => navigate("/cart")} />
             </Badge>
           </MenuItem>
         </Right>

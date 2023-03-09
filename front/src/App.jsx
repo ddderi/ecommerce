@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Announcement from "./components/Announcement";
 import Account from "./pages/Account";
+import Cart from "./pages/Cart";
 
 const App = () => {
   return (
@@ -18,11 +19,10 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/account" element={<Account />} />
+          <Route path="/cart" element={<Cart />} />
         </Routes>
       </BrowserRouter>
     </>
-
-    // <Home />;
   );
 };
 
