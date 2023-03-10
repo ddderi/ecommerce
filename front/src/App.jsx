@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar";
 import Announcement from "./components/Announcement";
 import Account from "./pages/Account";
 import Cart from "./pages/Cart";
+import ProductList from "./pages/ProductList";
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/account" element={<Account />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/products" element={<ProductList />} />
         </Routes>
       </BrowserRouter>
     </>

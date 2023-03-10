@@ -50,7 +50,7 @@ const Navbar = () => {
         <Left>
           <Language>EN</Language>
           <SearchContainer>
-            <Input />
+            <Input placeholder="Search" />
             <SearchIcon style={{ color: "gray", fontSize: 16 }} />
           </SearchContainer>
         </Left>
@@ -60,7 +60,7 @@ const Navbar = () => {
         <Right>
           {!userConnected && (
             <>
-              <MenuItem onClick={() => navigate("/register")}>
+              <MenuItem onClick={() => navigate("/products")}>
                 PRODUCTS
               </MenuItem>
               <MenuItem onClick={() => navigate("/register")}>
@@ -72,7 +72,7 @@ const Navbar = () => {
           {userConnected && (
             <>
               <MenuItem onClick={() => loggedUserOut()}>DISCONNECT</MenuItem>
-              <MenuItem onClick={() => navigate("/register")}>
+              <MenuItem onClick={() => navigate("/products")}>
                 PRODUCTS
               </MenuItem>
               <MenuItem onClick={() => navigate("/account")}>ACCOUNT</MenuItem>
