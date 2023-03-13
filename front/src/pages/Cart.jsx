@@ -64,9 +64,9 @@ const Cart = () => {
               </ProductDetail>
               <PriceDetail>
                 <ProductAmountContainer>
-                  <AddIcon />
+                  <AddIcon style={{ cursor: "pointer" }} />
                   <ProductAmount>2</ProductAmount>
-                  <RemoveIcon />
+                  <RemoveIcon style={{ cursor: "pointer" }} />
                 </ProductAmountContainer>
                 <ProductPrice>$30</ProductPrice>
               </PriceDetail>
@@ -90,9 +90,9 @@ const Cart = () => {
               </ProductDetail>
               <PriceDetail>
                 <ProductAmountContainer>
-                  <AddIcon />
+                  <AddIcon style={{ cursor: "pointer" }} />
                   <ProductAmount>2</ProductAmount>
-                  <RemoveIcon />
+                  <RemoveIcon style={{ cursor: "pointer" }} />
                 </ProductAmountContainer>
                 <ProductPrice>$ 30</ProductPrice>
               </PriceDetail>
