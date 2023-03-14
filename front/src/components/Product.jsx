@@ -2,8 +2,10 @@ import { Container, Circle, Image, Info, Icon } from "../styles/Product.styles";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import { Navigate, useNavigate, Link } from "react-router-dom";
 
 const Product = ({ data }) => {
+  const navigate = useNavigate();
   return (
     <Container>
       <Circle />
@@ -13,7 +15,9 @@ const Product = ({ data }) => {
           <ShoppingCartOutlinedIcon />
         </Icon>
         <Icon>
-          <SearchOutlinedIcon />
+          <SearchOutlinedIcon
+            onClick={() => navigate(`/products/${data.id}`)}
+          />
         </Icon>
         <Icon>
           <FavoriteBorderOutlinedIcon />

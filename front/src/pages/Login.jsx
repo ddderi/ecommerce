@@ -110,7 +110,7 @@ const Login = () => {
           })
         );
         setTimeout(() => {
-          navigate("/home");
+          navigate("/");
         }, 1000);
 
         dispatch(setLoading(false));
@@ -179,7 +179,7 @@ const Login = () => {
 
   return (
     <>
-      {userLogged && <Navigate replace to="/home" />}
+      {userLogged && <Navigate replace to="/" />}
       {!userLogged && (
         <Container>
           <Wrapper>

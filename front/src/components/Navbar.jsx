@@ -55,7 +55,7 @@ const Navbar = () => {
           </SearchContainer>
         </Left>
         <Center>
-          <Logo onClick={() => navigate("/home")}>E-com</Logo>
+          <Logo onClick={() => navigate("/")}>E-com</Logo>
         </Center>
         <Right>
           {!userConnected && (

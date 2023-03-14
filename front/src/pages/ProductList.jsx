@@ -9,6 +9,7 @@ import {
   Select,
   Option,
 } from "../styles/ProductList.styles";
+import { Route, Outlet } from "react-router-dom";
 
 const ProductList = () => {
   return (
@@ -48,7 +49,13 @@ const ProductList = () => {
           </Select>
         </Filter>
       </FilterContainer>
+      {/* <Route path="/products" exact> */}
       <Products />
+      {/* </Route>
+
+      <Route path="/products/:id">
+        <Outlet />
+      </Route> */}
     </Container>
   );
 };

@@ -107,4 +107,8 @@ export const Button = styled.button`
   &:hover {
     background-color: #f8f4f4;
   }
+  padding: ${(props) => props.type === "back" && "10px"};
+  position: ${(props) => props.type === "back" && "absolute"};
+  left: ${(props) => props.type === "back" && "50px"};
+  ${mobile({ display: "none" })}
 `;

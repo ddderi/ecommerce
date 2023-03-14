@@ -98,7 +98,7 @@ const Register = () => {
           })
         );
         setTimeout(() => {
-          navigate("/home");
+          navigate("/");
         }, 1000);
       }
 
@@ -110,7 +110,7 @@ const Register = () => {
 
   return (
     <>
-      {userLogged && <Navigate replace to="/home" />}
+      {userLogged && <Navigate replace to="/" />}
       {!userLogged && (
         <Container>
           <Wrapper>
