@@ -13,7 +13,6 @@ import {
   AddContainer,
   FilterSizeOption,
   FilterSize,
-  FilterColor,
   Filter,
   FilterContainer,
   FilterTitle,
@@ -22,12 +21,7 @@ import React from "react";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import Newsletter from "../components/Newsletter";
-import {
-  useParams,
-  Outlet,
-  ScrollRestoration,
-  useNavigate,
-} from "react-router-dom";
+import { useParams, ScrollRestoration, useNavigate } from "react-router-dom";
 import { popularProducts } from "../data";
 import { useState, useEffect } from "react";
 

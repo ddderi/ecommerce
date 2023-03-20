@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import {
   Container,
@@ -7,15 +7,9 @@ import {
   Title,
   Form,
   Input,
-  Agreement,
-  Button,
   WrapperButton,
   InputPassword,
   IconWrapper,
-  Error,
-  ContainerError,
-  Link,
-  LinkPassword,
 } from "../styles/Login.styles";
 
 const Account = () => {

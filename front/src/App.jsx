@@ -1,18 +1,12 @@
-import { useEffect } from "react";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import {
   Route,
-  useNavigate,
-  Outlet,
-  ScrollRestoration,
   createBrowserRouter,
   createRoutesFromElements,
   RouterProvider,
 } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import Announcement from "./components/Announcement";
 import Account from "./pages/Account";
 import Cart from "./pages/Cart";
 import ProductList from "./pages/ProductList";

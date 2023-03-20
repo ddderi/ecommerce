@@ -1,5 +1,5 @@
 import { Checkbox } from "@mui/material";
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import {
   Container,
   Wrapper,
@@ -14,10 +14,9 @@ import {
   Error,
   Link,
   ContainerError,
-  LinkPassword,
 } from "../styles/Register.styles";
 import { SignUpUser } from "../services/UserRequest.jsx";
-import { auth, db } from "../config/firebase-config";
+import { auth } from "../config/firebase-config";
 import "firebase/auth";
 import firebase from "firebase/compat/app";
 import { useTogglePasswordVisibility } from "../hooks/useTogglePasswordVisibility/index.jsx";

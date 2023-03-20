@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import Badge from "@mui/material/Badge";
 import SearchIcon from "@mui/icons-material/Search";
 import {
@@ -19,7 +19,7 @@ import { useDispatch } from "react-redux";
 import { setMessage } from "../redux/authSlice";
 import { useSelector } from "react-redux";
 import "firebase/auth";
-import { auth, db } from "../config/firebase-config";
+import { auth } from "../config/firebase-config";
 import { logout } from "../redux/authSlice";
 
 const Navbar = () => {
@@ -28,17 +28,34 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const userConnected = useSelector((state) => state.authUser.userLogged);
 
-  const loggedUserOut = async () => {
+  const loggedUserOut = useCallback(async () => {
     try {
       const logOutUser = await auth.signOut();
       dispatch(logout());
       window.localStorage.removeItem("auth");
       window.localStorage.removeItem("tokenEcom");
+      window.localStorage.removeItem("uid");
       return logOutUser;
     } catch (error) {
       console.log(error);
     }
-  };
+  }, [dispatch]);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        const idTokenResult = await user.getIdTokenResult();
+        const tokenExpirationTime = idTokenResult.expirationTime;
+        const currentTime = Date.now(); // Convert to seconds
+
+        // 1 heure
+        if (tokenExpirationTime < currentTime) {
+          loggedUserOut();
+        }
+      }
+    });
+    return unsubscribe;
+  }, [loggedUserOut]);
 
   useEffect(() => {
     dispatch(setMessage(null));

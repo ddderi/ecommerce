@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import {
   Container,
   Wrapper,
@@ -15,7 +15,7 @@ import {
   Link,
   LinkPassword,
 } from "../styles/Login.styles";
-import { auth, db } from "../config/firebase-config";
+import { auth } from "../config/firebase-config";
 import "firebase/auth";
 import firebase from "firebase/compat/app";
 import { resendEmailVerification } from "../services/UserRequest.jsx";
@@ -93,6 +93,7 @@ const Login = () => {
           )
         );
       } else if (result.user.emailVerified) {
+        // auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
         emailRef.current.value = "";
         passwordRef.current.value = "";
         console.log(result);
@@ -100,6 +101,7 @@ const Login = () => {
           "tokenEcom",
           result.user._delegate.accessToken
         );
+        window.localStorage.setItem("uid", result.user._delegate.uid);
         window.localStorage.setItem("auth", "true");
         dispatch(
           setUser({
@@ -115,6 +117,9 @@ const Login = () => {
 
         dispatch(setLoading(false));
       }
+      console.log(auth.currentUser);
+      console.log(result);
+
       return result;
     } catch (error) {
       dispatch(setLoading(false));

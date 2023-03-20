@@ -1,4 +1,3 @@
-import Announcement from "../components/Announcement";
 import Products from "../components/Products";
 import {
   Container,
@@ -9,7 +8,6 @@ import {
   Select,
   Option,
 } from "../styles/ProductList.styles";
-import { Route, Outlet } from "react-router-dom";
 
 const ProductList = () => {
   return (
@@ -18,34 +16,34 @@ const ProductList = () => {
       <FilterContainer>
         <Filter>
           <FilterText>Filter Products:</FilterText>
-          <Select>
-            <Option disabled selected>
+          <Select defaultValue="Color">
+            <Option disabled value="Color">
               Color
             </Option>
-            <Option>White</Option>
-            <Option>Black</Option>
-            <Option>Red</Option>
-            <Option>Blue</Option>
-            <Option>Yellow</Option>
-            <Option>Green</Option>
+            <Option value="White">White</Option>
+            <Option value="Black">Black</Option>
+            <Option value="Red">Red</Option>
+            <Option value="Blue">Blue</Option>
+            <Option value="Yellow">Yellow</Option>
+            <Option value="Green">Green</Option>
           </Select>
-          <Select>
-            <Option disabled selected>
+          <Select defaultValue="Size">
+            <Option disabled value="Size">
               Size
             </Option>
-            <Option>XS</Option>
-            <Option>S</Option>
-            <Option>M</Option>
-            <Option>L</Option>
-            <Option>XL</Option>
+            <Option value="XS">XS</Option>
+            <Option value="S">S</Option>
+            <Option value="M">M</Option>
+            <Option value="L">L</Option>
+            <Option value="XL">XL</Option>
           </Select>
         </Filter>
         <Filter>
           <FilterText>Sort Products:</FilterText>
-          <Select>
-            <Option selected>Newest</Option>
-            <Option>Price (asc)</Option>
-            <Option>Price (desc)</Option>
+          <Select defaultValue="option1">
+            <Option value="option1">Newest</Option>
+            <Option value="option2">Price (asc)</Option>
+            <Option value="option3">Price (desc)</Option>
           </Select>
         </Filter>
       </FilterContainer>

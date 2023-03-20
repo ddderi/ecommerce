@@ -45,3 +45,25 @@ export async function resendEmailVerification(data, dispatchDataError) {
     console.log(error);
   }
 }
+
+export async function getCart(id) {
+  try {
+    const token = window.localStorage.getItem("tokenEcom");
+    const result = await axiosInstanceNode.get(
+      `/cart/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          id,
+        },
+      },
+      { withCredentials: true }
+    );
+    console.log(result);
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
+}
