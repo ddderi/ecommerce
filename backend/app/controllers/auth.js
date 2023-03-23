@@ -8,7 +8,7 @@ module.exports = (req, res, next) => {
   const token = authHeader.split(" ")[1];
 
   // Verify the token using the Firebase Admin SDK
-  //   admin.auth().verifyIdToken(token)
+
   adminAuth
     .verifyIdToken(token)
     .then((decodedToken) => {

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { mobile } from "./responsive";
 
 export const Container = styled.div``;
 
@@ -37,10 +38,16 @@ export const TopText = styled.span`
 export const Bottom = styled.div`
   display: flex;
   justify-content: space-between;
+  ${mobile({ flexDirection: "column" })};
 `;
 
 export const Info = styled.div`
   flex: 3;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3%;
 `;
 
 export const Product = styled.div`
@@ -125,4 +132,10 @@ export const Button = styled.button`
   background-color: black;
   color: white;
   font-weight: 600;
+`;
+
+export const EmptyBag = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

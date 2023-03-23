@@ -46,6 +46,26 @@ export async function resendEmailVerification(data, dispatchDataError) {
   }
 }
 
+export async function addCart(data) {
+  try {
+    const token = window.localStorage.getItem("tokenEcom");
+    const result = await axiosInstanceNode.post(
+      `/addCart`,
+      { data },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+      { withCredentials: true }
+    );
+    console.log(result);
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function getCart(id) {
   try {
     const token = window.localStorage.getItem("tokenEcom");
@@ -61,6 +81,25 @@ export async function getCart(id) {
       },
       { withCredentials: true }
     );
+    console.log(result);
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getProducts() {
+  try {
+    const result = await axiosInstanceNode.get("/products");
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getProduct(id) {
+  try {
+    const result = await axiosInstanceNode.get(`/product/${id}`);
     console.log(result);
     return result;
   } catch (error) {

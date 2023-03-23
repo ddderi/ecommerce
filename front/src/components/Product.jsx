@@ -9,7 +9,7 @@ const Product = ({ data }) => {
   return (
     <Container>
       <Circle />
-      <Image src={data.img} />
+      <Image src={data.image} />
       <Info>
         <Icon>
           <ShoppingCartOutlinedIcon />

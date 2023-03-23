@@ -47,13 +47,7 @@ const ProductList = () => {
           </Select>
         </Filter>
       </FilterContainer>
-      {/* <Route path="/products" exact> */}
       <Products />
-      {/* </Route>
-
-      <Route path="/products/:id">
-        <Outlet />
-      </Route> */}
     </Container>
   );
 };

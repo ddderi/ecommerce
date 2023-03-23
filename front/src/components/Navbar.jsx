@@ -21,12 +21,24 @@ import { useSelector } from "react-redux";
 import "firebase/auth";
 import { auth } from "../config/firebase-config";
 import { logout } from "../redux/authSlice";
+import { getProducts } from "../services/UserRequest";
+import { setProducts } from "../redux/productSlice";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
   const userConnected = useSelector((state) => state.authUser.userLogged);
+
+  const fetchProducts = async () => {
+    try {
+      const result = await getProducts();
+      dispatch(setProducts(result.data.products));
+      return result;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const loggedUserOut = useCallback(async () => {
     try {
@@ -42,12 +54,21 @@ const Navbar = () => {
   }, [dispatch]);
 
   useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
         const idTokenResult = await user.getIdTokenResult();
         const tokenExpirationTime = idTokenResult.expirationTime;
         const currentTime = Date.now(); // Convert to seconds
-
+        const currentToken = window.localStorage.getItem("tokenEcom");
+        if (idTokenResult.token !== currentToken) {
+          window.localStorage.setItem("tokenEcom", idTokenResult.token);
+        }
+        // console.log(tokenExpirationTime);
+        // console.log(currentTime);
         // 1 heure
         if (tokenExpirationTime < currentTime) {
           loggedUserOut();

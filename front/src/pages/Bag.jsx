@@ -28,6 +28,7 @@ import {
   SummaryTitle,
   SummaryItemText,
   Button,
+  EmptyBag,
 } from "../styles/Bag.styles";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -169,7 +170,7 @@ const Bag = ({ setToggleBagWish, items }) => {
               </Top>
               <Bottom>
                 <Info>
-                  <div>Empty cart</div>
+                  <EmptyBag>Your cart is empty...</EmptyBag>
                   {/* <Product>
                     <ProductDetail>
                       <Image src="https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/ab3ec819-7808-4cd8-ba1c-b1e9386c8540/air-jordan-1-low-shoes-v2kdOZ.png"></Image>
@@ -226,19 +227,19 @@ const Bag = ({ setToggleBagWish, items }) => {
                   <SummaryTitle>ORDER SUMMARY</SummaryTitle>
                   <SummaryItem>
                     <SummaryItemText>Subtotal</SummaryItemText>
-                    <SummaryItemPrice>$ 80</SummaryItemPrice>
+                    <SummaryItemPrice>$ 0</SummaryItemPrice>
                   </SummaryItem>
                   <SummaryItem>
                     <SummaryItemText>Estimated Shipping</SummaryItemText>
-                    <SummaryItemPrice>$ 5.90</SummaryItemPrice>
+                    <SummaryItemPrice>$ 0</SummaryItemPrice>
                   </SummaryItem>
                   <SummaryItem>
                     <SummaryItemText>Shipping Discount</SummaryItemText>
-                    <SummaryItemPrice>$ -5</SummaryItemPrice>
+                    <SummaryItemPrice>$ 0</SummaryItemPrice>
                   </SummaryItem>
                   <SummaryItem type="total">
                     <SummaryItemText>Total</SummaryItemText>
-                    <SummaryItemPrice>$ 80</SummaryItemPrice>
+                    <SummaryItemPrice>$ 0</SummaryItemPrice>
                   </SummaryItem>
                   <Button>CHECKOUT NOW</Button>
                 </Summary>

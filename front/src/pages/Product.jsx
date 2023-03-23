@@ -22,11 +22,16 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import Newsletter from "../components/Newsletter";
 import { useParams, ScrollRestoration, useNavigate } from "react-router-dom";
-import { popularProducts } from "../data";
 import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addCart } from "../services/UserRequest";
 
 const Product = () => {
-  const [selectProduct, setSelectProduct] = useState({});
+  const [quantity, setQuantity] = useState(1);
+  const [selectProduct, setSelectProduct] = useState();
+  const dispatch = useDispatch();
+  const products = useSelector((state) => state.productSlice.products);
+
   let params = useParams();
   const navigate = useNavigate();
 
@@ -36,10 +41,26 @@ const Product = () => {
   }, [params.id]);
 
   const selectedProduct = (id) => {
-    const product = popularProducts.find(
-      (product) => product.id === parseInt(id)
-    );
+    const product = products.find((product) => product.id === id);
     return setSelectProduct(product);
+  };
+
+  const changeQuantity = (value) => {
+    if (value === "plus") {
+      setQuantity(quantity + 1);
+    } else if (value === "moins" && quantity > 0) {
+      setQuantity(quantity - 1);
+    }
+  };
+
+  const addToTheCart = async () => {
+    try {
+      const result = await addCart();
+      console.log(result);
+      return result;
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -51,7 +72,7 @@ const Product = () => {
           </Button>
           <Wrapper>
             <ImgContainer>
-              <Image src={selectProduct.img} />
+              <Image src={selectProduct.image} />
             </ImgContainer>
             <InfoContainer>
               <Title>{selectProduct.name}</Title>
@@ -88,9 +109,15 @@ const Product = () => {
               </FilterContainer>
               <AddContainer>
                 <AmountContainer>
-                  <RemoveIcon />
-                  <Amount>1</Amount>
-                  <AddIcon />
+                  <RemoveIcon
+                    style={{ cursor: "pointer" }}
+                    onClick={() => changeQuantity("moins")}
+                  />
+                  <Amount>{quantity}</Amount>
+                  <AddIcon
+                    style={{ cursor: "pointer" }}
+                    onClick={() => changeQuantity("plus")}
+                  />
                 </AmountContainer>
                 <Button>ADD TO CART</Button>
               </AddContainer>

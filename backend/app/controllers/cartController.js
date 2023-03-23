@@ -3,9 +3,7 @@ const db = require("../../config/firebaseconfig").db;
 const cartController = {
   addCart: async function (req, res) {
     try {
-      const { item, quantity, price } = req.body;
-
-      const userId = req.userId;
+      const { item, quantity, price, userId } = req.body;
 
       const cartRef = db.collection("carts").doc(userId);
       const cartDoc = await cartRef.get();
