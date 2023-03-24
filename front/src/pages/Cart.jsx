@@ -7,11 +7,13 @@ const Cart = () => {
   const [toggleBagWish, setToggleBagWish] = useState(false);
   const [items, setItems] = useState([]);
 
-  const fetchCart = async function () {
+  const fetchCart = async () => {
     try {
       const uid = window.localStorage.getItem("uid");
       const data = await getCart(uid);
-      setItems(data.cart);
+      console.log(data.data.cart.items);
+      console.log("test");
+      setItems(data.data.cart.items);
       return data;
     } catch (error) {
       console.log();

@@ -16,17 +16,22 @@ import {
   Filter,
   FilterContainer,
   FilterTitle,
+  FilterColor,
 } from "../styles/ProductInfo.styles";
 import React from "react";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
+
 import Newsletter from "../components/Newsletter";
 import { useParams, ScrollRestoration, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addCart } from "../services/UserRequest";
+import { useRef } from "react";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 
-const Product = () => {
+const Product = memo(() => {
+  const sizeRef = useRef();
+  const colorRef = useRef();
   const [quantity, setQuantity] = useState(1);
   const [selectProduct, setSelectProduct] = useState();
   const dispatch = useDispatch();
@@ -53,14 +58,51 @@ const Product = () => {
     }
   };
 
+  // const changeQuantity = useCallback(
+  //   (value) => {
+  //     setQuantity((prevQuantity) => {
+  //       if (value === "plus") {
+  //         return prevQuantity + 1;
+  //       } else if (value === "moins" && prevQuantity > 0) {
+  //         return prevQuantity - 1;
+  //       } else {
+  //         return prevQuantity;
+  //       }
+  //     });
+  //   },
+  //   [quantity]
+  // );
+
+  console.log(selectProduct);
+
   const addToTheCart = async () => {
     try {
-      const result = await addCart();
+      const uid = window.localStorage.getItem("uid");
+
+      const data = {
+        userId: uid,
+        id: selectProduct.id,
+        price: selectProduct.price,
+        item: selectProduct.name,
+        quantity: quantity,
+        // quantity: quantityRef.current.value,
+        size: sizeRef.current.textContent,
+        // price: selectProduct.price,
+        image: selectProduct.image,
+        color: colorRef.current.value,
+      };
+      const result = await addCart(data);
       console.log(result);
       return result;
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleColorClick = (ref, data) => {
+    console.log(ref);
+    console.log(data);
+    ref.current.value = data;
   };
 
   return (
@@ -87,23 +129,25 @@ const Product = () => {
               <FilterContainer>
                 <Filter>
                   <FilterTitle>Color</FilterTitle>
-                  {/* <>
                   {selectProduct.color.map((data, index) => {
-                    <FilterColor key={index} color={data} />;
+                    return (
+                      <FilterColor
+                        ref={colorRef}
+                        key={index}
+                        color={data}
+                        onClick={() => handleColorClick(colorRef, data)}
+                      />
+                    );
                   })}
-                </> */}
-                  {/* <FilterColor color="black" />
-                <FilterColor color="darkblue" />
-                <FilterColor color="gray" /> */}
                 </Filter>
                 <Filter>
                   <FilterTitle>Size</FilterTitle>
                   <FilterSize>
-                    <FilterSizeOption>XS</FilterSizeOption>
-                    <FilterSizeOption>S</FilterSizeOption>
-                    <FilterSizeOption>M</FilterSizeOption>
-                    <FilterSizeOption>L</FilterSizeOption>
-                    <FilterSizeOption>XL</FilterSizeOption>
+                    <FilterSizeOption ref={sizeRef}>XS</FilterSizeOption>
+                    <FilterSizeOption ref={sizeRef}>S</FilterSizeOption>
+                    <FilterSizeOption ref={sizeRef}>M</FilterSizeOption>
+                    <FilterSizeOption ref={sizeRef}>L</FilterSizeOption>
+                    <FilterSizeOption ref={sizeRef}>XL</FilterSizeOption>
                   </FilterSize>
                 </Filter>
               </FilterContainer>
@@ -119,7 +163,7 @@ const Product = () => {
                     onClick={() => changeQuantity("plus")}
                   />
                 </AmountContainer>
-                <Button>ADD TO CART</Button>
+                <Button onClick={() => addToTheCart()}>ADD TO CART</Button>
               </AddContainer>
             </InfoContainer>
           </Wrapper>
@@ -129,6 +173,6 @@ const Product = () => {
       )}
     </>
   );
-};
+});
 
 export default Product;

@@ -43,7 +43,7 @@ export const Bottom = styled.div`
 
 export const Info = styled.div`
   flex: 3;
-
+  flex-direction: column;
   display: flex;
   align-items: center;
   justify-content: center;
