@@ -49,7 +49,6 @@ export async function resendEmailVerification(data, dispatchDataError) {
 export async function addCart(data) {
   try {
     const token = window.localStorage.getItem("tokenEcom");
-    console.log(data);
     const result = await axiosInstanceNode.post(
       `/addCart`,
       { data },
@@ -60,7 +59,6 @@ export async function addCart(data) {
       },
       { withCredentials: true }
     );
-    console.log(result);
     return result;
   } catch (error) {
     console.log(error);
@@ -82,7 +80,6 @@ export async function getCart(id) {
       },
       { withCredentials: true }
     );
-    console.log(result);
     return result;
   } catch (error) {
     console.log(error);

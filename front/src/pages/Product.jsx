@@ -31,6 +31,7 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { getProduct } from "../services/UserRequest";
 import { NotFoundPage } from "./NotFoundPage";
+import { updateCart } from "../redux/productSlice";
 
 const Product = () => {
   const sizeRef = useRef();
@@ -38,6 +39,7 @@ const Product = () => {
   const [quantity, setQuantity] = useState(1);
   const [selectProduct, setSelectProduct] = useState();
   const [productExists, setProductExists] = useState();
+  const dispatch = useDispatch();
 
   let params = useParams();
   const navigate = useNavigate();
@@ -58,28 +60,6 @@ const Product = () => {
       }
     }
   };
-
-  // const getSelectProduct = async (id) => {
-  //   try {
-  //     const result = await getProduct(id);
-  //     console.log(result);
-  //     if (result) {
-  //       setSelectProduct(result.data.product);
-  //     }
-  //     // if (!result.response.data.productExists) {
-  //     //   return navigate("/404");
-  //     // } else if (result.data.productExists) {
-  //     //   setSelectProduct(result.data.product);
-  //     // }
-  //     // setSelectProduct(result.data.product);
-  //     return result;
-  //   } catch (error) {
-  //     // if (result.response.status === 404) {
-  //     //   return navigate("/404");
-  //     // }
-  //     console.log(error);
-  //   }
-  // };
 
   useEffect(() => {
     const id = params.id;
@@ -113,7 +93,8 @@ const Product = () => {
         color: selectedColor,
       };
       const result = await addCart(data);
-      console.log(result);
+      dispatch(updateCart());
+      // console.log(result);
       return result;
     } catch (error) {
       console.log(error);

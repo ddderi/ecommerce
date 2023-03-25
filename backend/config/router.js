@@ -10,7 +10,7 @@ require("dotenv").config();
 router.post("/verification-email", firebaseController.sendVerificationEmail);
 router.post("/signup", firebaseController.signupUser);
 
-router.post("/user_info", userController.createUserAdress);
+router.post("/user_info", auth, userController.createUserAdress);
 
 router.get("/products", productController.getProducts);
 router.get("/products/:id", productController.getProduct);

@@ -31,11 +31,11 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const userConnected = useSelector((state) => state.authUser.userLogged);
   const userCart = useSelector((state) => state.productSlice.cart);
+  const cartUpdate = useSelector((state) => state.productSlice.cartUpdated);
 
   const cartLength = () => {
     let number = 0;
     userCart.map((data) => {
-      console.log(data.quantity);
       number += data.quantity;
     });
     return number;
@@ -53,11 +53,11 @@ const Navbar = () => {
 
   const fetchCart = async () => {
     try {
-      console.log("hgappening");
+      // console.log("hgappening");
       const uid = window.localStorage.getItem("uid");
       const data = await getCart(uid);
-      console.log(data.data.cart.items);
-      console.log("test");
+      // console.log(data.data.cart.items);
+      // console.log("test");
       dispatch(setCart(data.data.cart.items));
       // setItems(data.data.cart.items);
       return data;
@@ -81,12 +81,15 @@ const Navbar = () => {
 
   useEffect(() => {
     fetchProducts();
+    fetchCart();
   }, []);
 
   useEffect(() => {
-    fetchCart();
-    console.log("cart useffect trigger");
-  }, []);
+    if (cartUpdate) {
+      fetchCart();
+      console.log("cart useffect trigger bcs updated");
+    }
+  }, [cartUpdate]);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Wrapper,
@@ -36,6 +36,18 @@ import { useNavigate } from "react-router-dom";
 
 const Bag = ({ setToggleBagWish, items }) => {
   const navigate = useNavigate();
+  const [subtotal, setSubtotal] = useState(0);
+
+  useEffect(() => {
+    let newTotal = 0;
+    if (items) {
+      items.forEach((data) => {
+        newTotal += data.price * data.quantity;
+      });
+    }
+    setSubtotal(newTotal);
+  }, [items]);
+
   console.log(items);
   return (
     <>
@@ -93,7 +105,7 @@ const Bag = ({ setToggleBagWish, items }) => {
               <SummaryTitle>ORDER SUMMARY</SummaryTitle>
               <SummaryItem>
                 <SummaryItemText>Subtotal</SummaryItemText>
-                <SummaryItemPrice>$ 80</SummaryItemPrice>
+                <SummaryItemPrice>$ {subtotal}</SummaryItemPrice>
               </SummaryItem>
               <SummaryItem>
                 <SummaryItemText>Estimated Shipping</SummaryItemText>
@@ -101,11 +113,11 @@ const Bag = ({ setToggleBagWish, items }) => {
               </SummaryItem>
               <SummaryItem>
                 <SummaryItemText>Shipping Discount</SummaryItemText>
-                <SummaryItemPrice>$ -5</SummaryItemPrice>
+                <SummaryItemPrice>$ 0</SummaryItemPrice>
               </SummaryItem>
               <SummaryItem type="total">
                 <SummaryItemText>Total</SummaryItemText>
-                <SummaryItemPrice>$ 80</SummaryItemPrice>
+                <SummaryItemPrice>$ {subtotal + 5.9}</SummaryItemPrice>
               </SummaryItem>
               <Button>CHECKOUT NOW</Button>
             </Summary>
