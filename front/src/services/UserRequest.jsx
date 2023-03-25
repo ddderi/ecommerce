@@ -100,10 +100,10 @@ export async function getProducts() {
 
 export async function getProduct(id) {
   try {
-    const result = await axiosInstanceNode.get(`/product/${id}`);
-    console.log(result);
+    const result = await axiosInstanceNode.get(`/products/${id}`);
     return result;
   } catch (error) {
     console.log(error);
+    throw error;
   }
 }

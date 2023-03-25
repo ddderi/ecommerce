@@ -17,6 +17,7 @@ import {
   FilterContainer,
   FilterTitle,
   FilterColor,
+  SelectedColor,
 } from "../styles/ProductInfo.styles";
 import React from "react";
 
@@ -28,17 +29,57 @@ import { addCart } from "../services/UserRequest";
 import { useRef } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import { getProduct } from "../services/UserRequest";
+import { NotFoundPage } from "./NotFoundPage";
 
-const Product = memo(() => {
+const Product = () => {
   const sizeRef = useRef();
-  const colorRef = useRef();
+  const [selectedColor, setSelectedColor] = useState("black");
   const [quantity, setQuantity] = useState(1);
   const [selectProduct, setSelectProduct] = useState();
-  const dispatch = useDispatch();
-  const products = useSelector((state) => state.productSlice.products);
+  const [productExists, setProductExists] = useState();
 
   let params = useParams();
   const navigate = useNavigate();
+
+  const getSelectProduct = async (id) => {
+    try {
+      const result = await getProduct(id);
+
+      if (result) {
+        setSelectProduct(result.data.product);
+      }
+
+      return result;
+    } catch (error) {
+      console.log(error);
+      if (error.response.status === 404) {
+        return navigate("/404");
+      }
+    }
+  };
+
+  // const getSelectProduct = async (id) => {
+  //   try {
+  //     const result = await getProduct(id);
+  //     console.log(result);
+  //     if (result) {
+  //       setSelectProduct(result.data.product);
+  //     }
+  //     // if (!result.response.data.productExists) {
+  //     //   return navigate("/404");
+  //     // } else if (result.data.productExists) {
+  //     //   setSelectProduct(result.data.product);
+  //     // }
+  //     // setSelectProduct(result.data.product);
+  //     return result;
+  //   } catch (error) {
+  //     // if (result.response.status === 404) {
+  //     //   return navigate("/404");
+  //     // }
+  //     console.log(error);
+  //   }
+  // };
 
   useEffect(() => {
     const id = params.id;
@@ -46,8 +87,7 @@ const Product = memo(() => {
   }, [params.id]);
 
   const selectedProduct = (id) => {
-    const product = products.find((product) => product.id === id);
-    return setSelectProduct(product);
+    getSelectProduct(id);
   };
 
   const changeQuantity = (value) => {
@@ -57,23 +97,6 @@ const Product = memo(() => {
       setQuantity(quantity - 1);
     }
   };
-
-  // const changeQuantity = useCallback(
-  //   (value) => {
-  //     setQuantity((prevQuantity) => {
-  //       if (value === "plus") {
-  //         return prevQuantity + 1;
-  //       } else if (value === "moins" && prevQuantity > 0) {
-  //         return prevQuantity - 1;
-  //       } else {
-  //         return prevQuantity;
-  //       }
-  //     });
-  //   },
-  //   [quantity]
-  // );
-
-  console.log(selectProduct);
 
   const addToTheCart = async () => {
     try {
@@ -85,11 +108,9 @@ const Product = memo(() => {
         price: selectProduct.price,
         item: selectProduct.name,
         quantity: quantity,
-        // quantity: quantityRef.current.value,
         size: sizeRef.current.textContent,
-        // price: selectProduct.price,
         image: selectProduct.image,
-        color: colorRef.current.value,
+        color: selectedColor,
       };
       const result = await addCart(data);
       console.log(result);
@@ -99,15 +120,17 @@ const Product = memo(() => {
     }
   };
 
-  const handleColorClick = (ref, data) => {
-    console.log(ref);
-    console.log(data);
-    ref.current.value = data;
+  const handleColorClick = (data) => {
+    setSelectedColor(data);
   };
+
+  // if (!selectProduct.color) {
+  //   navigate("404");
+  // }
 
   return (
     <>
-      {selectProduct && (
+      {selectProduct ? (
         <Container>
           <Button type="back" onClick={() => navigate(-1)}>
             back
@@ -129,16 +152,17 @@ const Product = memo(() => {
               <FilterContainer>
                 <Filter>
                   <FilterTitle>Color</FilterTitle>
-                  {selectProduct.color.map((data, index) => {
-                    return (
-                      <FilterColor
-                        ref={colorRef}
-                        key={index}
-                        color={data}
-                        onClick={() => handleColorClick(colorRef, data)}
-                      />
-                    );
-                  })}
+                  {selectProduct.color &&
+                    selectProduct.color.map((data, index) => {
+                      return (
+                        <FilterColor
+                          key={index}
+                          color={data}
+                          isSelected={selectedColor === data}
+                          onClick={() => handleColorClick(data)}
+                        />
+                      );
+                    })}
                 </Filter>
                 <Filter>
                   <FilterTitle>Size</FilterTitle>
@@ -170,9 +194,11 @@ const Product = memo(() => {
           <Newsletter />
           <ScrollRestoration />
         </Container>
+      ) : (
+        <div>Loading...</div>
       )}
     </>
   );
-});
+};
 
 export default Product;

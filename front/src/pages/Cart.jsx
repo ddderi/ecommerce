@@ -2,28 +2,12 @@ import { useState, useEffect } from "react";
 import WishList from "./WishList";
 import Bag from "./Bag";
 import { getCart } from "../services/UserRequest";
+import { useSelector } from "react-redux";
 
 const Cart = () => {
   const [toggleBagWish, setToggleBagWish] = useState(false);
-  const [items, setItems] = useState([]);
 
-  const fetchCart = async () => {
-    try {
-      const uid = window.localStorage.getItem("uid");
-      const data = await getCart(uid);
-      console.log(data.data.cart.items);
-      console.log("test");
-      setItems(data.data.cart.items);
-      return data;
-    } catch (error) {
-      console.log();
-    }
-  };
-
-  useEffect(() => {
-    fetchCart();
-    console.log("cart useffect trigger");
-  }, []);
+  const items = useSelector((state) => state.productSlice.cart);
 
   return (
     <>

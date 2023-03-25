@@ -64,6 +64,16 @@ export const FilterColor = styled.div`
   background-color: ${(props) => props.color};
   margin: 0px 5px;
   cursor: pointer;
+  transition: transform 0.25s ease-in-out;
+  ${(props) =>
+    props.isSelected &&
+    `
+    transform: scale(1.3);
+  `}
+`;
+
+export const SelectedColor = styled.div`
+  border: 5px solid blue;
 `;
 
 export const FilterSize = styled.select`

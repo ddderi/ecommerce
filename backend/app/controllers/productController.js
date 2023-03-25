@@ -20,13 +20,28 @@ const productController = {
   getProduct: async function (req, res) {
     try {
       const { id } = req.params;
-      console.log(id);
+
       const productRef = db.collection("products").doc(id);
       const response = await productRef.get();
-      const product = response.data();
-      return res.status(200).json({ product });
+
+      if (!response.exists) {
+        return res
+          .status(404)
+          .json({ message: "Product not found", productExists: false });
+      }
+
+      const productData = response.data();
+      if (!productData) {
+        return res
+          .status(404)
+          .json({ message: "Product data not found", productExists: false });
+      }
+
+      const product = { ...productData, id: id };
+      return res.status(200).json({ product, productExists: true });
     } catch (error) {
       console.log(error);
+      return res.status(500).json({ message: "Internal server error" });
     }
   },
 };

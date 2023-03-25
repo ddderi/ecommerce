@@ -22,13 +22,24 @@ import "firebase/auth";
 import { auth } from "../config/firebase-config";
 import { logout } from "../redux/authSlice";
 import { getProducts } from "../services/UserRequest";
-import { setProducts } from "../redux/productSlice";
+import { setProducts, setCart } from "../redux/productSlice";
+import { getCart } from "../services/UserRequest";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
   const userConnected = useSelector((state) => state.authUser.userLogged);
+  const userCart = useSelector((state) => state.productSlice.cart);
+
+  const cartLength = () => {
+    let number = 0;
+    userCart.map((data) => {
+      console.log(data.quantity);
+      number += data.quantity;
+    });
+    return number;
+  };
 
   const fetchProducts = async () => {
     try {
@@ -37,6 +48,21 @@ const Navbar = () => {
       return result;
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const fetchCart = async () => {
+    try {
+      console.log("hgappening");
+      const uid = window.localStorage.getItem("uid");
+      const data = await getCart(uid);
+      console.log(data.data.cart.items);
+      console.log("test");
+      dispatch(setCart(data.data.cart.items));
+      // setItems(data.data.cart.items);
+      return data;
+    } catch (error) {
+      console.log();
     }
   };
 
@@ -55,6 +81,11 @@ const Navbar = () => {
 
   useEffect(() => {
     fetchProducts();
+  }, []);
+
+  useEffect(() => {
+    fetchCart();
+    console.log("cart useffect trigger");
   }, []);
 
   useEffect(() => {
@@ -117,7 +148,7 @@ const Navbar = () => {
             </>
           )}
           <MenuItem>
-            <Badge badgeContent={0} color="primary">
+            <Badge badgeContent={cartLength()} color="primary">
               <ShoppingCartOutlinedIcon onClick={() => navigate("/cart")} />
             </Badge>
           </MenuItem>

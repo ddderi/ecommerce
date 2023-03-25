@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 const Product = ({ data }) => {
   const navigate = useNavigate();
+
   return (
     <Container>
       <Circle />

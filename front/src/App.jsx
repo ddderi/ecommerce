@@ -12,6 +12,7 @@ import Cart from "./pages/Cart";
 import ProductList from "./pages/ProductList";
 import Product from "./pages/Product";
 import RootLayout from "./layouts/RootLayout";
+import { NotFoundPage } from "./pages/NotFoundPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -25,6 +26,8 @@ const router = createBrowserRouter(
         <Route path="search" element={<Product />} />
       </Route>
       <Route path="products/:id" element={<Product />} />
+      <Route path="404" element={<NotFoundPage />} />
+      <Route path="*" element={<NotFoundPage />} />
     </Route>
   )
 );

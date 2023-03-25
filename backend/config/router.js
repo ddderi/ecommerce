@@ -13,7 +13,7 @@ router.post("/signup", firebaseController.signupUser);
 router.post("/user_info", userController.createUserAdress);
 
 router.get("/products", productController.getProducts);
-router.get("/product/:id", productController.getProduct);
+router.get("/products/:id", productController.getProduct);
 
 router.post("/addCart", auth, cartController.addCart);
 
