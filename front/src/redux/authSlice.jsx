@@ -9,6 +9,7 @@ const initialState = {
   redirectRegister: false,
   token: null,
   uid: null,
+  messageError: null,
 };
 
 const authSlice = createSlice({
@@ -20,12 +21,6 @@ const authSlice = createSlice({
     },
     setLinkInfo: (state, action) => {
       state.linkInfo = action.payload;
-    },
-    setMessage: (state, action) => {
-      state.message = action.payload;
-    },
-    setLoading: (state, action) => {
-      state.loading = action.payload;
     },
     setUser: (state, action) => {
       state.user = action.payload.user;
@@ -42,15 +37,26 @@ const authSlice = createSlice({
       state.token = null;
       state.uid = null;
     },
+    setMessage: (state, action) => {
+      state.message = action.payload;
+    },
+    setMessageError: (state, action) => {
+      state.messageError = action.payload;
+    },
+    cancelMessage: (state) => {
+      state.messageError = null;
+    },
   },
 });
 
 export const {
   setLoading,
   setUser,
-  setMessage,
   logout,
   setLinkInfo,
   setRedirectRegister,
+  setMessage,
+  setMessageError,
+  cancelMessage,
 } = authSlice.actions;
 export default authSlice.reducer;

@@ -1,7 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import WishList from "./WishList";
 import Bag from "./Bag";
-import { getCart } from "../services/UserRequest";
 import { useSelector } from "react-redux";
 
 const Cart = () => {

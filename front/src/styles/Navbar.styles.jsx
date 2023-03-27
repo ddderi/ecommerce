@@ -77,3 +77,11 @@ export const MenuItem = styled.div`
   margin-left: 25px;
   ${mobile({ fontSize: "12px", marginLeft: "10px" })};
 `;
+
+export const Message = styled.div`
+  text-align: center;
+  flex: 1;
+  margin: auto;
+  color: red;
+  /* background-color: red; */
+`;

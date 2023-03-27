@@ -17,58 +17,73 @@ import {
   FilterContainer,
   FilterTitle,
   FilterColor,
-  SelectedColor,
 } from "../styles/ProductInfo.styles";
 import React from "react";
 
 import Newsletter from "../components/Newsletter";
 import { useParams, ScrollRestoration, useNavigate } from "react-router-dom";
-import { useState, useEffect, memo } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { addCart } from "../services/UserRequest";
 import { useRef } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { getProduct } from "../services/UserRequest";
-import { NotFoundPage } from "./NotFoundPage";
 import { updateCart } from "../redux/productSlice";
+import { setMessageError, cancelMessage } from "../redux/authSlice";
 
 const Product = () => {
   const sizeRef = useRef();
   const [selectedColor, setSelectedColor] = useState("black");
   const [quantity, setQuantity] = useState(1);
   const [selectProduct, setSelectProduct] = useState();
-  const [productExists, setProductExists] = useState();
   const dispatch = useDispatch();
 
   let params = useParams();
   const navigate = useNavigate();
 
-  const getSelectProduct = async (id) => {
-    try {
-      const result = await getProduct(id);
+  // const getSelectProduct = async (id) => {
+  //   try {
+  //     const result = await getProduct(id);
 
-      if (result) {
-        setSelectProduct(result.data.product);
-      }
+  //     if (result) {
+  //       setSelectProduct(result.data.product);
+  //     }
 
-      return result;
-    } catch (error) {
-      console.log(error);
-      if (error.response.status === 404) {
-        return navigate("/404");
-      }
-    }
-  };
+  //     return result;
+  //   } catch (error) {
+  //     console.log(error);
+  //     if (error.response.status === 404) {
+  //       return navigate("/404");
+  //     }
+  //   }
+  // };
 
   useEffect(() => {
+    const getSelectProduct = async (id) => {
+      try {
+        const result = await getProduct(id);
+
+        if (result) {
+          setSelectProduct(result.data.product);
+        }
+
+        return result;
+      } catch (error) {
+        console.log(error);
+        if (error.response.status === 404) {
+          return navigate("/404");
+        }
+      }
+    };
+
+    const selectedProduct = (id) => {
+      getSelectProduct(id);
+    };
+
     const id = params.id;
     selectedProduct(id);
-  }, [params.id]);
-
-  const selectedProduct = (id) => {
-    getSelectProduct(id);
-  };
+  }, [params.id, navigate]);
 
   const changeQuantity = (value) => {
     if (value === "plus") {
@@ -79,6 +94,7 @@ const Product = () => {
   };
 
   const addToTheCart = async () => {
+    dispatch(cancelMessage());
     try {
       const uid = window.localStorage.getItem("uid");
 
@@ -98,16 +114,17 @@ const Product = () => {
       return result;
     } catch (error) {
       console.log(error);
+      if (error.response.status === 401) {
+        dispatch(
+          setMessageError("Your token is expired, refresh or reconnect.")
+        );
+      }
     }
   };
 
   const handleColorClick = (data) => {
     setSelectedColor(data);
   };
-
-  // if (!selectProduct.color) {
-  //   navigate("404");
-  // }
 
   return (
     <>

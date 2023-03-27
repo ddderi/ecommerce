@@ -70,8 +70,8 @@ const Bag = ({ setToggleBagWish, items }) => {
             <Info>
               {items &&
                 items.map((data) => (
-                  <React.Fragment key={data.id}>
-                    <Product>
+                  <>
+                    <Product key={data.id}>
                       <ProductDetail>
                         <Image src={data.image}></Image>
                         <Details>
@@ -97,7 +97,7 @@ const Bag = ({ setToggleBagWish, items }) => {
                       </PriceDetail>
                     </Product>
                     <Hr />
-                  </React.Fragment>
+                  </>
                 ))}
               {!items && <EmptyBag>Your cart is empty...</EmptyBag>}
             </Info>

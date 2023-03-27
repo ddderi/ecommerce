@@ -12,15 +12,15 @@ import {
   Input,
   Logo,
   MenuItem,
+  Message,
 } from "../styles/Navbar.styles";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setMessage } from "../redux/authSlice";
 import { useSelector } from "react-redux";
 import "firebase/auth";
 import { auth } from "../config/firebase-config";
-import { logout } from "../redux/authSlice";
+import { logout, setMessage, cancelMessage } from "../redux/authSlice";
 import { getProducts } from "../services/UserRequest";
 import { setProducts, setCart } from "../redux/productSlice";
 import { getCart } from "../services/UserRequest";
@@ -32,39 +32,36 @@ const Navbar = () => {
   const userConnected = useSelector((state) => state.authUser.userLogged);
   const userCart = useSelector((state) => state.productSlice.cart);
   const cartUpdate = useSelector((state) => state.productSlice.cartUpdated);
+  const errorMessage = useSelector((state) => state.authUser.messageError);
 
   const cartLength = () => {
     let number = 0;
     userCart.map((data) => {
-      number += data.quantity;
+      return (number += data.quantity);
     });
     return number;
   };
 
-  const fetchProducts = async () => {
-    try {
-      const result = await getProducts();
-      dispatch(setProducts(result.data.products));
-      return result;
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const fetchProducts = async () => {
+  //   try {
+  //     const result = await getProducts();
+  //     dispatch(setProducts(result.data.products));
+  //     return result;
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
-  const fetchCart = async () => {
-    try {
-      // console.log("hgappening");
-      const uid = window.localStorage.getItem("uid");
-      const data = await getCart(uid);
-      // console.log(data.data.cart.items);
-      // console.log("test");
-      dispatch(setCart(data.data.cart.items));
-      // setItems(data.data.cart.items);
-      return data;
-    } catch (error) {
-      console.log();
-    }
-  };
+  // const fetchCart = async () => {
+  //   try {
+  //     const uid = window.localStorage.getItem("uid");
+  //     const data = await getCart(uid);
+  //     dispatch(setCart(data.data.cart.items));
+  //     return data;
+  //   } catch (error) {
+  //     console.log();
+  //   }
+  // };
 
   const loggedUserOut = useCallback(async () => {
     try {
@@ -80,16 +77,47 @@ const Navbar = () => {
   }, [dispatch]);
 
   useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const result = await getProducts();
+        dispatch(setProducts(result.data.products));
+        return result;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    const fetchCart = async () => {
+      try {
+        const uid = window.localStorage.getItem("uid");
+        const data = await getCart(uid);
+        dispatch(setCart(data.data.cart.items));
+        return data;
+      } catch (error) {
+        console.log();
+      }
+    };
+
     fetchProducts();
     fetchCart();
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
+    const fetchCart = async () => {
+      try {
+        const uid = window.localStorage.getItem("uid");
+        const data = await getCart(uid);
+        dispatch(setCart(data.data.cart.items));
+        return data;
+      } catch (error) {
+        console.log();
+      }
+    };
+
     if (cartUpdate) {
       fetchCart();
-      console.log("cart useffect trigger bcs updated");
     }
-  }, [cartUpdate]);
+  }, [cartUpdate, dispatch]);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -113,6 +141,7 @@ const Navbar = () => {
   }, [loggedUserOut]);
 
   useEffect(() => {
+    dispatch(cancelMessage());
     dispatch(setMessage(null));
   }, [dispatch, location]);
 
@@ -157,6 +186,7 @@ const Navbar = () => {
           </MenuItem>
         </Right>
       </Wrapper>
+      {errorMessage && <Message>{errorMessage}</Message>}
     </Container>
   );
 };

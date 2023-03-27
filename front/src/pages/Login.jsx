@@ -117,8 +117,8 @@ const Login = () => {
 
         dispatch(setLoading(false));
       }
-      console.log(auth.currentUser);
-      console.log(result);
+      // console.log(auth.currentUser);
+      // console.log(result);
 
       return result;
     } catch (error) {

@@ -62,6 +62,7 @@ export async function addCart(data) {
     return result;
   } catch (error) {
     console.log(error);
+    throw error;
   }
 }
 
@@ -83,6 +84,7 @@ export async function getCart(id) {
     return result;
   } catch (error) {
     console.log(error);
+    throw error;
   }
 }
 
